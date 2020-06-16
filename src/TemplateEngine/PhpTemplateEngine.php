@@ -18,14 +18,8 @@ use RuntimeException;
  */
 final class PhpTemplateEngine implements TemplateEngineInterface
 {
-    /**
-     * @var string
-     */
-    private $templatePath;
-    /**
-     * @var string
-     */
-    private $extension;
+    private string $templatePath;
+    private string $extension;
 
     /**
      * PhpTemplateEngine constructor.

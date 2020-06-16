@@ -22,14 +22,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 final class SymfonySerializerResponderDecorator implements Responder
 {
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-    /**
-     * @var Responder
-     */
-    private $simpleResponse;
+    private SerializerInterface $serializer;
+    private Responder $simpleResponse;
 
     /**
      * SymfonySerializerResponderDecorator constructor.

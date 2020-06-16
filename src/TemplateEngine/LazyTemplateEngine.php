@@ -21,14 +21,8 @@ use RuntimeException;
  */
 final class LazyTemplateEngine implements TemplateEngineInterface
 {
-    /**
-     * @var Closure
-     */
-    private $factory;
-    /**
-     * @var TemplateEngineInterface|null
-     */
-    private $templateEngine;
+    private Closure $factory;
+    private ?TemplateEngineInterface $templateEngine;
 
     /**
      * LazyTemplateEngine constructor.
@@ -38,6 +32,7 @@ final class LazyTemplateEngine implements TemplateEngineInterface
     public function __construct(Closure $factory)
     {
         $this->factory = $factory;
+        $this->templateEngine = null;
     }
 
     public function render(string $template, array $data = []): string

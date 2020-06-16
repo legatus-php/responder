@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Legatus\Http\Responder\TemplateEngine;
 
 use Twig\Environment;
+use Twig\Error as TwigError;
 
 /**
  * An adapter for the Twig templating engine.
@@ -19,10 +20,7 @@ use Twig\Environment;
 final class TwigTemplateEngine implements TemplateEngineInterface
 {
     private const EXTENSION = '.html.twig';
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
     /**
      * TwigTemplateEngine constructor.
@@ -38,9 +36,9 @@ final class TwigTemplateEngine implements TemplateEngineInterface
      * @param string $template
      * @param array  $data
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws TwigError\LoaderError
+     * @throws TwigError\RuntimeError
+     * @throws TwigError\SyntaxError
      *
      * @return string
      */

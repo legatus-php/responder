@@ -19,14 +19,8 @@ use Psr\Http\Message\ResponseInterface as Response;
  */
 final class TemplateEngineResponderDecorator implements Responder
 {
-    /**
-     * @var Responder
-     */
-    private $simpleResponse;
-    /**
-     * @var TemplateEngineInterface
-     */
-    private $templateEngine;
+    private Responder $simpleResponse;
+    private TemplateEngineInterface $templateEngine;
 
     /**
      * TemplateEngineResponderDecorator constructor.

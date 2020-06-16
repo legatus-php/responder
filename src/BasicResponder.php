@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Legatus\Http\Responder;
 
 use JsonSerializable;
-use Mimey\MimeTypes;
+use Mimey\MimeTypesInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -24,27 +24,18 @@ use stdClass;
  */
 final class BasicResponder implements Responder
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $response;
-    /**
-     * @var StreamFactoryInterface
-     */
-    private $stream;
-    /**
-     * @var MimeTypes
-     */
-    private $mimeTypes;
+    private ResponseFactoryInterface $response;
+    private StreamFactoryInterface $stream;
+    private MimeTypesInterface $mimeTypes;
 
     /**
      * HttpFactoryResponder constructor.
      *
      * @param ResponseFactoryInterface $response
      * @param StreamFactoryInterface   $stream
-     * @param MimeTypes                $mimeTypes
+     * @param MimeTypesInterface       $mimeTypes
      */
-    public function __construct(ResponseFactoryInterface $response, StreamFactoryInterface $stream, MimeTypes $mimeTypes)
+    public function __construct(ResponseFactoryInterface $response, StreamFactoryInterface $stream, MimeTypesInterface $mimeTypes)
     {
         $this->response = $response;
         $this->stream = $stream;
@@ -58,7 +49,7 @@ final class BasicResponder implements Responder
     {
         if (is_array($data) || $data instanceof JsonSerializable || $data instanceof stdClass) {
             return $this->response->createResponse(200)
-                ->withBody($this->stream->createStream(json_encode($data)))
+                ->withBody($this->stream->createStream(json_encode($data, JSON_THROW_ON_ERROR)))
                 ->withHeader('Content-Type', 'application/json; charset=utf8');
         }
         throw new RuntimeException('$data must be either an array or an instance of JsonSerializable');

@@ -18,10 +18,7 @@ use League\Plates\Engine;
  */
 final class PlatesTemplateEngine implements TemplateEngineInterface
 {
-    /**
-     * @var Engine
-     */
-    private $plates;
+    private Engine $plates;
 
     /**
      * PlatesTemplateEngine constructor.
