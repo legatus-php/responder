@@ -41,8 +41,8 @@ Read the contributing guide to know how can you contribute to Quilt.
 ## Security Issues
 Please report security issues privately by email and give us a period of grace before disclosing.
 
-## About Quilt
-Quilt is a personal open source project led by Matías Navarro Carter and developed by contributors.
+## About Legatus
+Legatus is a personal open source project led by Matías Navarro Carter and developed by contributors.
 
 [composer]: https://getcomposer.org/
 [docs]: https://legatus.mnavarro.dev/components/responder
