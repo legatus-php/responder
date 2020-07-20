@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder;
+namespace Legatus\Http;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -76,12 +76,12 @@ interface Responder
     public function download(string $filename, string $downloadName = null): Response;
 
     /**
-     * Creates a blank response.
+     * Creates a raw response.
      *
      * @param int    $status
      * @param string $body
      *
      * @return Response
      */
-    public function response(int $status = 200, string $body = ''): Response;
+    public function raw(int $status = 200, string $body = ''): Response;
 }

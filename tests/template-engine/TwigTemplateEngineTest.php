@@ -9,9 +9,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\Tests\TemplateEngine;
+namespace Legatus\Support;
 
-use Legatus\Http\Responder\TemplateEngine\TwigTemplateEngine;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 
@@ -24,7 +23,7 @@ final class TwigTemplateEngineTest extends TestCase
     {
         $twig = $this->createMock(Environment::class);
 
-        $twig->expects($this->once())
+        $twig->expects(self::once())
             ->method('render')
             ->with('some/template.html.twig', [])
             ->willReturn('template string')
@@ -33,6 +32,6 @@ final class TwigTemplateEngineTest extends TestCase
         $templating = new TwigTemplateEngine($twig);
         $string = $templating->render('some/template');
 
-        $this->assertSame('template string', $string);
+        self::assertSame('template string', $string);
     }
 }

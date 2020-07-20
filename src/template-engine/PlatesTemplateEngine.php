@@ -9,14 +9,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\TemplateEngine;
+namespace Legatus\Support;
 
 use League\Plates\Engine;
 
 /**
  * An adapter for the Plates Templating Engine.
  */
-final class PlatesTemplateEngine implements TemplateEngineInterface
+final class PlatesTemplateEngine implements TemplateEngine
 {
     private Engine $plates;
 

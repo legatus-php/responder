@@ -9,11 +9,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\Tests;
+namespace Legatus\Http;
 
 use DateTime;
-use Legatus\Http\Responder\Responder;
-use Legatus\Http\Responder\SymfonySerializerResponderDecorator;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -22,7 +20,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class BasicResponderTest.
  */
-final class SymfonySerializerSimpleResponseDecoratorTest extends TestCase
+final class SymfonySerializerResponderTest extends TestCase
 {
     public function testJson(): void
     {
@@ -32,30 +30,30 @@ final class SymfonySerializerSimpleResponseDecoratorTest extends TestCase
         $streamMock = $this->createMock(StreamInterface::class);
         $dateTime = new DateTime();
 
-        $serializerMock->expects($this->once())
+        $serializerMock->expects(self::once())
             ->method('serialize')
             ->with($dateTime, 'json', [])
             ->willReturn('some-data');
-        $simpleResponseMock->expects($this->once())
-            ->method('response')
+        $simpleResponseMock->expects(self::once())
+            ->method('raw')
             ->with(200)
             ->willReturn($responseMock);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('getBody')
             ->willReturn($streamMock);
-        $streamMock->expects($this->once())
+        $streamMock->expects(self::once())
             ->method('write')
             ->with('some-data');
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withHeader')
             ->with('Content-Type', 'application/json; charset=utf8')
             ->willReturn($responseMock);
-        $simpleResponseMock->expects($this->never())
+        $simpleResponseMock->expects(self::never())
             ->method('json');
 
-        $simpleResponse = new SymfonySerializerResponderDecorator($serializerMock, $simpleResponseMock);
+        $simpleResponse = new SymfonySerializerResponder($serializerMock, $simpleResponseMock);
         $response = $simpleResponse->json($dateTime);
-        $this->assertSame($responseMock, $response);
+        self::assertSame($responseMock, $response);
     }
 
     public function testHtml(): void
@@ -64,14 +62,14 @@ final class SymfonySerializerSimpleResponseDecoratorTest extends TestCase
         $simpleResponseMock = $this->createMock(Responder::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('html')
             ->with('<h1>Hello</h1>')
             ->willReturn($responseMock);
 
-        $simpleResponse = new SymfonySerializerResponderDecorator($serializerMock, $simpleResponseMock);
+        $simpleResponse = new SymfonySerializerResponder($serializerMock, $simpleResponseMock);
         $response = $simpleResponse->html('<h1>Hello</h1>');
-        $this->assertSame($response, $responseMock);
+        self::assertSame($response, $responseMock);
     }
 
     public function testTemplate(): void
@@ -80,14 +78,14 @@ final class SymfonySerializerSimpleResponseDecoratorTest extends TestCase
         $simpleResponseMock = $this->createMock(Responder::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('template')
             ->with('template', ['key' => 'value'])
             ->willReturn($responseMock);
 
-        $simpleResponse = new SymfonySerializerResponderDecorator($serializerMock, $simpleResponseMock);
+        $simpleResponse = new SymfonySerializerResponder($serializerMock, $simpleResponseMock);
         $response = $simpleResponse->template('template', ['key' => 'value']);
-        $this->assertSame($response, $responseMock);
+        self::assertSame($response, $responseMock);
     }
 
     public function testRedirect(): void
@@ -96,14 +94,14 @@ final class SymfonySerializerSimpleResponseDecoratorTest extends TestCase
         $simpleResponseMock = $this->createMock(Responder::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('redirect')
             ->with('/uri')
             ->willReturn($responseMock);
 
-        $simpleResponse = new SymfonySerializerResponderDecorator($serializerMock, $simpleResponseMock);
+        $simpleResponse = new SymfonySerializerResponder($serializerMock, $simpleResponseMock);
         $response = $simpleResponse->redirect('/uri');
-        $this->assertSame($response, $responseMock);
+        self::assertSame($response, $responseMock);
     }
 
     public function testBlob(): void
@@ -112,14 +110,14 @@ final class SymfonySerializerSimpleResponseDecoratorTest extends TestCase
         $simpleResponseMock = $this->createMock(Responder::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('blob')
             ->with('/file.png')
             ->willReturn($responseMock);
 
-        $simpleResponse = new SymfonySerializerResponderDecorator($serializerMock, $simpleResponseMock);
+        $simpleResponse = new SymfonySerializerResponder($serializerMock, $simpleResponseMock);
         $response = $simpleResponse->blob('/file.png');
-        $this->assertSame($response, $responseMock);
+        self::assertSame($response, $responseMock);
     }
 
     public function testDownload(): void
@@ -128,14 +126,14 @@ final class SymfonySerializerSimpleResponseDecoratorTest extends TestCase
         $simpleResponseMock = $this->createMock(Responder::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('download')
             ->with('/file.png', 'download.png')
             ->willReturn($responseMock);
 
-        $simpleResponse = new SymfonySerializerResponderDecorator($serializerMock, $simpleResponseMock);
+        $simpleResponse = new SymfonySerializerResponder($serializerMock, $simpleResponseMock);
         $response = $simpleResponse->download('/file.png', 'download.png');
-        $this->assertSame($response, $responseMock);
+        self::assertSame($response, $responseMock);
     }
 
     public function testResponse(): void
@@ -144,13 +142,13 @@ final class SymfonySerializerSimpleResponseDecoratorTest extends TestCase
         $simpleResponseMock = $this->createMock(Responder::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
-            ->method('response')
+        $simpleResponseMock->expects(self::once())
+            ->method('raw')
             ->with(400)
             ->willReturn($responseMock);
 
-        $simpleResponse = new SymfonySerializerResponderDecorator($serializerMock, $simpleResponseMock);
-        $response = $simpleResponse->response(400);
-        $this->assertSame($response, $responseMock);
+        $simpleResponse = new SymfonySerializerResponder($serializerMock, $simpleResponseMock);
+        $response = $simpleResponse->raw(400);
+        self::assertSame($response, $responseMock);
     }
 }

@@ -9,10 +9,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\Tests\TemplateEngine;
+namespace Legatus\Support;
 
-use Legatus\Http\Responder\TemplateEngine\LazyTemplateEngine;
-use Legatus\Http\Responder\TemplateEngine\TemplateEngineInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,12 +20,12 @@ final class LazyTemplateEngineTest extends TestCase
 {
     public function testRender(): void
     {
-        $templateEngineMock = $this->createMock(TemplateEngineInterface::class);
+        $templateEngineMock = $this->createMock(TemplateEngine::class);
         $callable = static function () use ($templateEngineMock) {
             return $templateEngineMock;
         };
 
-        $templateEngineMock->expects($this->once())
+        $templateEngineMock->expects(self::once())
             ->method('render')
             ->with('template', [])
             ->willReturn('Template string')

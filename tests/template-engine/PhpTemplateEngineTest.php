@@ -9,9 +9,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\Tests\TemplateEngine;
+namespace Legatus\Support;
 
-use Legatus\Http\Responder\TemplateEngine\PhpTemplateEngine;
 use PHPUnit\Framework\TestCase;
 use Vfs\FileSystem;
 use Vfs\Node\Directory;

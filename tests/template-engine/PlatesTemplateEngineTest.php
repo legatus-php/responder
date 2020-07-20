@@ -9,14 +9,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\Tests\TemplateEngine;
+namespace Legatus\Support;
 
 use League\Plates\Engine;
-use Legatus\Http\Responder\TemplateEngine\PlatesTemplateEngine;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @internal
+ * Class PlatesTemplateEngineTest.
  */
 final class PlatesTemplateEngineTest extends TestCase
 {
@@ -24,11 +23,11 @@ final class PlatesTemplateEngineTest extends TestCase
     {
         $engine = $this->createMock(Engine::class);
 
-        $engine->expects($this->once())
+        $engine->expects(self::once())
             ->method('getFileExtension')
             ->willReturn('php')
         ;
-        $engine->expects($this->once())
+        $engine->expects(self::once())
             ->method('render')
             ->with('some/template.php', [])
             ->willReturn('template string')
@@ -37,6 +36,6 @@ final class PlatesTemplateEngineTest extends TestCase
         $templating = new PlatesTemplateEngine($engine);
         $string = $templating->render('some/template');
 
-        $this->assertSame('template string', $string);
+        self::assertSame('template string', $string);
     }
 }

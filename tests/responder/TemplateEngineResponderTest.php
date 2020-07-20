@@ -9,140 +9,138 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\Tests\TemplateEngine;
+namespace Legatus\Http;
 
-use Legatus\Http\Responder\Responder;
-use Legatus\Http\Responder\TemplateEngine\TemplateEngineInterface;
-use Legatus\Http\Responder\TemplateEngine\TemplateEngineResponderDecorator;
+use Legatus\Support\TemplateEngine;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @internal
+ * Class TemplateEngineResponderTest.
  */
-final class TemplateEngineSimpleResponseDecoratorTest extends TestCase
+final class TemplateEngineResponderTest extends TestCase
 {
     public function testItRespondsWithJson(): void
     {
         $simpleResponseMock = $this->createMock(Responder::class);
-        $templateEngineMock = $this->createMock(TemplateEngineInterface::class);
+        $templateEngineMock = $this->createMock(TemplateEngine::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('json')
             ->with(['data' => 'value'])
             ->willReturn($responseMock)
         ;
 
-        $simpleResponse = new TemplateEngineResponderDecorator($simpleResponseMock, $templateEngineMock);
+        $simpleResponse = new TemplateEngineResponder($simpleResponseMock, $templateEngineMock);
         $response = $simpleResponse->json(['data' => 'value']);
-        $this->assertSame($responseMock, $response);
+        self::assertSame($responseMock, $response);
     }
 
     public function testItRespondsWithHtml(): void
     {
         $simpleResponseMock = $this->createMock(Responder::class);
-        $templateEngineMock = $this->createMock(TemplateEngineInterface::class);
+        $templateEngineMock = $this->createMock(TemplateEngine::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('html')
             ->with('<h1>Text</h1>')
             ->willReturn($responseMock)
         ;
 
-        $simpleResponse = new TemplateEngineResponderDecorator($simpleResponseMock, $templateEngineMock);
+        $simpleResponse = new TemplateEngineResponder($simpleResponseMock, $templateEngineMock);
         $response = $simpleResponse->html('<h1>Text</h1>');
-        $this->assertSame($responseMock, $response);
+        self::assertSame($responseMock, $response);
     }
 
     public function testItRespondsWithTemplate(): void
     {
         $simpleResponseMock = $this->createMock(Responder::class);
-        $templateEngineMock = $this->createMock(TemplateEngineInterface::class);
+        $templateEngineMock = $this->createMock(TemplateEngine::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $templateEngineMock->expects($this->once())
+        $templateEngineMock->expects(self::once())
             ->method('render')
             ->with('template', ['data' => 'value'])
             ->willReturn('<h1>Text</h1>')
         ;
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('html')
             ->with('<h1>Text</h1>')
             ->willReturn($responseMock)
         ;
 
-        $simpleResponse = new TemplateEngineResponderDecorator($simpleResponseMock, $templateEngineMock);
+        $simpleResponse = new TemplateEngineResponder($simpleResponseMock, $templateEngineMock);
         $response = $simpleResponse->template('template', ['data' => 'value']);
-        $this->assertSame($responseMock, $response);
+        self::assertSame($responseMock, $response);
     }
 
     public function testItRespondsWithRedirect(): void
     {
         $simpleResponseMock = $this->createMock(Responder::class);
-        $templateEngineMock = $this->createMock(TemplateEngineInterface::class);
+        $templateEngineMock = $this->createMock(TemplateEngine::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('redirect')
             ->with('/home')
             ->willReturn($responseMock)
         ;
 
-        $simpleResponse = new TemplateEngineResponderDecorator($simpleResponseMock, $templateEngineMock);
+        $simpleResponse = new TemplateEngineResponder($simpleResponseMock, $templateEngineMock);
         $response = $simpleResponse->redirect('/home');
-        $this->assertSame($responseMock, $response);
+        self::assertSame($responseMock, $response);
     }
 
     public function testItRespondsWithBlob(): void
     {
         $simpleResponseMock = $this->createMock(Responder::class);
-        $templateEngineMock = $this->createMock(TemplateEngineInterface::class);
+        $templateEngineMock = $this->createMock(TemplateEngine::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('blob')
             ->with('hello.png')
             ->willReturn($responseMock)
         ;
 
-        $simpleResponse = new TemplateEngineResponderDecorator($simpleResponseMock, $templateEngineMock);
+        $simpleResponse = new TemplateEngineResponder($simpleResponseMock, $templateEngineMock);
         $response = $simpleResponse->blob('hello.png');
-        $this->assertSame($responseMock, $response);
+        self::assertSame($responseMock, $response);
     }
 
     public function testItRespondsWithDownload(): void
     {
         $simpleResponseMock = $this->createMock(Responder::class);
-        $templateEngineMock = $this->createMock(TemplateEngineInterface::class);
+        $templateEngineMock = $this->createMock(TemplateEngine::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
+        $simpleResponseMock->expects(self::once())
             ->method('download')
             ->with('hello.png')
             ->willReturn($responseMock)
         ;
 
-        $simpleResponse = new TemplateEngineResponderDecorator($simpleResponseMock, $templateEngineMock);
+        $simpleResponse = new TemplateEngineResponder($simpleResponseMock, $templateEngineMock);
         $response = $simpleResponse->download('hello.png');
-        $this->assertSame($responseMock, $response);
+        self::assertSame($responseMock, $response);
     }
 
     public function testItRespondsWithNormalResponse(): void
     {
         $simpleResponseMock = $this->createMock(Responder::class);
-        $templateEngineMock = $this->createMock(TemplateEngineInterface::class);
+        $templateEngineMock = $this->createMock(TemplateEngine::class);
         $responseMock = $this->createMock(ResponseInterface::class);
 
-        $simpleResponseMock->expects($this->once())
-            ->method('response')
+        $simpleResponseMock->expects(self::once())
+            ->method('raw')
             ->with(200)
             ->willReturn($responseMock)
         ;
 
-        $simpleResponse = new TemplateEngineResponderDecorator($simpleResponseMock, $templateEngineMock);
-        $response = $simpleResponse->response();
-        $this->assertSame($responseMock, $response);
+        $simpleResponse = new TemplateEngineResponder($simpleResponseMock, $templateEngineMock);
+        $response = $simpleResponse->raw();
+        self::assertSame($responseMock, $response);
     }
 }

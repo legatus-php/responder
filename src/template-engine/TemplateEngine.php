@@ -9,9 +9,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\TemplateEngine;
+namespace Legatus\Support;
 
-interface TemplateEngineInterface
+/**
+ * Interface TemplateEngine.
+ */
+interface TemplateEngine
 {
     /**
      * @param string $template

@@ -9,14 +9,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\TemplateEngine;
+namespace Legatus\Support;
 
 use RuntimeException;
 
 /**
  * Class PhpTemplateEngine.
  */
-final class PhpTemplateEngine implements TemplateEngineInterface
+final class PhpTemplateEngine implements TemplateEngine
 {
     private string $templatePath;
     private string $extension;

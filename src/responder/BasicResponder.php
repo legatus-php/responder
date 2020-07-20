@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder;
+namespace Legatus\Http;
 
 use JsonSerializable;
 use Mimey\MimeTypesInterface;
@@ -113,7 +113,7 @@ final class BasicResponder implements Responder
     /**
      * {@inheritdoc}
      */
-    public function response(int $status = 200, string $body = ''): Response
+    public function raw(int $status = 200, string $body = ''): Response
     {
         return $this->response->createResponse($status)
             ->withBody($this->stream->createStream($body));

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\TemplateEngine;
+namespace Legatus\Support;
 
 use Twig\Environment;
 use Twig\Error as TwigError;
@@ -17,7 +17,7 @@ use Twig\Error as TwigError;
 /**
  * An adapter for the Twig templating engine.
  */
-final class TwigTemplateEngine implements TemplateEngineInterface
+final class TwigTemplateEngine implements TemplateEngine
 {
     private const EXTENSION = '.html.twig';
     private Environment $twig;

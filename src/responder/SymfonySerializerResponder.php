@@ -9,37 +9,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\TemplateEngine;
+namespace Legatus\Http;
 
-use Legatus\Http\Responder\Responder;
 use Psr\Http\Message\ResponseInterface as Response;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class TemplateEngineResponderDecorator.
+ * Class SymfonySerializerResponder.
+ *
+ * This decorates simple response to use Symfony Serializer to turn data structures
+ * into json.
  */
-final class TemplateEngineResponderDecorator implements Responder
+final class SymfonySerializerResponder implements Responder
 {
+    private SerializerInterface $serializer;
     private Responder $simpleResponse;
-    private TemplateEngineInterface $templateEngine;
 
     /**
-     * TemplateEngineResponderDecorator constructor.
+     * SymfonySerializerResponder constructor.
      *
-     * @param Responder               $simpleResponse
-     * @param TemplateEngineInterface $templateEngine
+     * @param SerializerInterface $serializer
+     * @param Responder           $simpleResponse
      */
-    public function __construct(Responder $simpleResponse, TemplateEngineInterface $templateEngine)
+    public function __construct(SerializerInterface $serializer, Responder $simpleResponse)
     {
+        $this->serializer = $serializer;
         $this->simpleResponse = $simpleResponse;
-        $this->templateEngine = $templateEngine;
-    }
-
-    /**
-     * @return TemplateEngineInterface
-     */
-    public function getTemplateEngine(): TemplateEngineInterface
-    {
-        return $this->templateEngine;
     }
 
     /**
@@ -47,7 +42,11 @@ final class TemplateEngineResponderDecorator implements Responder
      */
     public function json($data, array $context = []): Response
     {
-        return $this->simpleResponse->json($data, $context);
+        $string = $this->serializer->serialize($data, 'json', $context);
+        $response = $this->raw(200);
+        $response->getBody()->write($string);
+
+        return $response->withHeader('Content-Type', 'application/json; charset=utf8');
     }
 
     /**
@@ -63,9 +62,7 @@ final class TemplateEngineResponderDecorator implements Responder
      */
     public function template(string $template, array $data = []): Response
     {
-        $html = $this->templateEngine->render($template, $data);
-
-        return $this->simpleResponse->html($html);
+        return $this->simpleResponse->template($template, $data);
     }
 
     /**
@@ -95,8 +92,8 @@ final class TemplateEngineResponderDecorator implements Responder
     /**
      * {@inheritdoc}
      */
-    public function response(int $status = 200, string $body = ''): Response
+    public function raw(int $status = 200, string $body = ''): Response
     {
-        return $this->simpleResponse->response($status);
+        return $this->simpleResponse->raw($status);
     }
 }

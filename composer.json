@@ -12,13 +12,17 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "Legatus\\Http\\Responder\\": "src"
+            "Legatus\\Http\\": ["src/responder"],
+            "Legatus\\Support\\": ["src/template-engine"]
         },
-        "files": ["functions.php"]
+        "files": [
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Legatus\\Http\\Responder\\Tests\\": "tests"
+            "Legatus\\Http\\": ["tests/responder"],
+            "Legatus\\Support\\": ["tests/template-engine"]
         }
     },
     "require": {

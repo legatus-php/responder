@@ -9,15 +9,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\TemplateEngine;
+namespace Legatus\Support;
 
 /**
  * Interface TemplateEngineFactoryInterface.
  */
-interface TemplateEngineFactoryInterface
+interface TemplateEngineFactory
 {
     /**
-     * @return TemplateEngineInterface
+     * @return TemplateEngine
      */
-    public function create(): TemplateEngineInterface;
+    public function create(): TemplateEngine;
 }

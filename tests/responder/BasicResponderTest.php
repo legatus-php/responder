@@ -9,10 +9,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\Tests;
+namespace Legatus\Http;
 
 use JsonSerializable;
-use Legatus\Http\Responder\BasicResponder;
 use Mimey\MimeTypes;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -21,6 +20,9 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 
+/**
+ * Class BasicResponderTest.
+ */
 final class BasicResponderTest extends TestCase implements JsonSerializable
 {
     public function testItRespondsWithJsonFromArray(): void
@@ -31,19 +33,19 @@ final class BasicResponderTest extends TestCase implements JsonSerializable
         $streamFactoryMock = $this->createMock(StreamFactoryInterface::class);
         $mimeTypesMock = $this->createMock(MimeTypes::class);
 
-        $responseFactoryMock->expects($this->once())
+        $responseFactoryMock->expects(self::once())
             ->method('createResponse')
             ->with(200, null)
             ->willReturn($responseMock);
-        $streamFactoryMock->expects($this->once())
+        $streamFactoryMock->expects(self::once())
             ->method('createStream')
             ->with('{"hello":"name"}')
             ->willReturn($streamStub);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withBody')
             ->with($streamStub)
             ->willReturn($responseMock);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withHeader')
             ->with('Content-Type', 'application/json; charset=utf8')
             ->willReturn($responseMock);
@@ -65,19 +67,19 @@ final class BasicResponderTest extends TestCase implements JsonSerializable
         $streamFactoryMock = $this->createMock(StreamFactoryInterface::class);
         $mimeTypesMock = $this->createMock(MimeTypes::class);
 
-        $responseFactoryMock->expects($this->once())
+        $responseFactoryMock->expects(self::once())
             ->method('createResponse')
             ->with(200, null)
             ->willReturn($responseMock);
-        $streamFactoryMock->expects($this->once())
+        $streamFactoryMock->expects(self::once())
             ->method('createStream')
             ->with('{"hello":"name"}')
             ->willReturn($streamStub);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withBody')
             ->with($streamStub)
             ->willReturn($responseMock);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withHeader')
             ->with('Content-Type', 'application/json; charset=utf8')
             ->willReturn($responseMock);
@@ -107,19 +109,19 @@ final class BasicResponderTest extends TestCase implements JsonSerializable
         $streamFactoryMock = $this->createMock(StreamFactoryInterface::class);
         $mimeTypesMock = $this->createMock(MimeTypes::class);
 
-        $responseFactoryMock->expects($this->once())
+        $responseFactoryMock->expects(self::once())
             ->method('createResponse')
             ->with(200, null)
             ->willReturn($responseMock);
-        $streamFactoryMock->expects($this->once())
+        $streamFactoryMock->expects(self::once())
             ->method('createStream')
             ->with('<h1>Hello world!</h1>')
             ->willReturn($streamStub);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withBody')
             ->with($streamStub)
             ->willReturn($responseMock);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withHeader')
             ->with('Content-Type', 'text/html; charset=utf8')
             ->willReturn($responseMock);
@@ -146,11 +148,11 @@ final class BasicResponderTest extends TestCase implements JsonSerializable
         $streamFactoryMock = $this->createMock(StreamFactoryInterface::class);
         $mimeTypesMock = $this->createMock(MimeTypes::class);
 
-        $responseFactoryMock->expects($this->once())
+        $responseFactoryMock->expects(self::once())
             ->method('createResponse')
             ->with(302, null)
             ->willReturn($responseMock);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withHeader')
             ->with('Location', '/uri')
             ->willReturn($responseMock);
@@ -167,19 +169,19 @@ final class BasicResponderTest extends TestCase implements JsonSerializable
         $streamFactoryMock = $this->createMock(StreamFactoryInterface::class);
         $mimeTypesMock = $this->createMock(MimeTypes::class);
 
-        $streamFactoryMock->expects($this->once())
+        $streamFactoryMock->expects(self::once())
             ->method('createStreamFromFile')
             ->with('/foo/bar.csv', 'rb')
             ->willReturn($streamMock);
-        $mimeTypesMock->expects($this->once())
+        $mimeTypesMock->expects(self::once())
             ->method('getMimeType')
             ->with('csv')
             ->willReturn('text/csv');
-        $responseFactoryMock->expects($this->once())
+        $responseFactoryMock->expects(self::once())
             ->method('createResponse')
             ->with(200, null)
             ->willReturn($responseMock);
-        $streamMock->expects($this->once())
+        $streamMock->expects(self::once())
             ->method('getSize')
             ->willReturn(300);
         $responseMock->expects($this->exactly(3))
@@ -190,7 +192,7 @@ final class BasicResponderTest extends TestCase implements JsonSerializable
                 ['Content-Disposition', 'attachment; filename="bar.csv"']
             )
             ->willReturn($responseMock);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withBody')
             ->with($streamMock)
             ->willReturn($responseMock);
@@ -207,19 +209,19 @@ final class BasicResponderTest extends TestCase implements JsonSerializable
         $streamFactoryMock = $this->createMock(StreamFactoryInterface::class);
         $mimeTypesMock = $this->createMock(MimeTypes::class);
 
-        $streamFactoryMock->expects($this->once())
+        $streamFactoryMock->expects(self::once())
             ->method('createStreamFromFile')
             ->with('/foo/bar', 'rb')
             ->willReturn($streamMock);
-        $mimeTypesMock->expects($this->once())
+        $mimeTypesMock->expects(self::once())
             ->method('getMimeType')
             ->with('')
             ->willReturn(null);
-        $responseFactoryMock->expects($this->once())
+        $responseFactoryMock->expects(self::once())
             ->method('createResponse')
             ->with(200, null)
             ->willReturn($responseMock);
-        $streamMock->expects($this->once())
+        $streamMock->expects(self::once())
             ->method('getSize')
             ->willReturn(300);
         $responseMock->expects($this->exactly(3))
@@ -230,7 +232,7 @@ final class BasicResponderTest extends TestCase implements JsonSerializable
                 ['Content-Disposition', 'attachment; filename="bar"']
             )
             ->willReturn($responseMock);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withBody')
             ->with($streamMock)
             ->willReturn($responseMock);
@@ -247,20 +249,20 @@ final class BasicResponderTest extends TestCase implements JsonSerializable
         $streamFactoryMock = $this->createMock(StreamFactoryInterface::class);
         $mimeTypesMock = $this->createMock(MimeTypes::class);
 
-        $responseFactoryMock->expects($this->once())
+        $responseFactoryMock->expects(self::once())
             ->method('createResponse')
             ->with(200, null)
             ->willReturn($responseMock);
-        $streamFactoryMock->expects($this->once())
+        $streamFactoryMock->expects(self::once())
             ->method('createStream')
             ->with('')
             ->willReturn($streamStub);
-        $responseMock->expects($this->once())
+        $responseMock->expects(self::once())
             ->method('withBody')
             ->with($streamStub)
             ->willReturn($responseMock);
 
         $simpleResponse = new BasicResponder($responseFactoryMock, $streamFactoryMock, $mimeTypesMock);
-        $simpleResponse->response(200);
+        $simpleResponse->raw(200);
     }
 }

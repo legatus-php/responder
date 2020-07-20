@@ -9,7 +9,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Legatus\Http\Responder\TemplateEngine;
+namespace Legatus\Support;
 
 use Closure;
 use RuntimeException;
@@ -19,10 +19,10 @@ use RuntimeException;
  *
  * Internally cached, lazy template engine implementation.
  */
-final class LazyTemplateEngine implements TemplateEngineInterface
+final class LazyTemplateEngine implements TemplateEngine
 {
     private Closure $factory;
-    private ?TemplateEngineInterface $templateEngine;
+    private ?TemplateEngine $templateEngine;
 
     /**
      * LazyTemplateEngine constructor.
@@ -41,14 +41,14 @@ final class LazyTemplateEngine implements TemplateEngineInterface
     }
 
     /**
-     * @return TemplateEngineInterface
+     * @return TemplateEngine
      */
-    private function templateEngine(): TemplateEngineInterface
+    private function templateEngine(): TemplateEngine
     {
         if ($this->templateEngine === null) {
             $templateEngine = ($this->factory)();
-            if (!$templateEngine instanceof TemplateEngineInterface) {
-                throw new RuntimeException(sprintf('The TemplateEngine callable must return an instance of %s', TemplateEngineInterface::class));
+            if (!$templateEngine instanceof TemplateEngine) {
+                throw new RuntimeException(sprintf('The TemplateEngine callable must return an instance of %s', TemplateEngine::class));
             }
             $this->templateEngine = $templateEngine;
         }

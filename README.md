@@ -15,8 +15,10 @@ composer require legatus/responder
 ## Quick Start
 
 ```php
+<?php
+
 // This automatically detects installed PSR Message Factories :)
-$responder = Legatus\Http\Responder\basic();
+$responder = Legatus\Http\create_responder();
 
 $response = $responder->json([
     'msg' => 'This is a cool json response',
@@ -28,6 +30,7 @@ $response = $responder->html('<h1>Hello World!</h1>');
 
 $response = $responder->blob('/file/location.ext');
 
+$response = $responder->raw();
 ```
 
 For more details you can check the [online documentation here][docs].
