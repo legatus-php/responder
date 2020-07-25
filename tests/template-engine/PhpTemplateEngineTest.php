@@ -21,33 +21,38 @@ use Vfs\Node\File;
  */
 final class PhpTemplateEngineTest extends TestCase
 {
-    public function testItRendersTemplate(): void
+    private FileSystem $fs;
+
+    public function setUp(): void
     {
         // Setting up virtual FS
-        $fs = FileSystem::factory('vfs://');
-        $fs->mount();
+        $this->fs = FileSystem::factory('vfs://');
+        $this->fs->mount();
+    }
+
+    public function tearDown(): void
+    {
+        $this->fs->unmount();
+    }
+
+    public function testItRendersTemplate(): void
+    {
         $foo = new Directory(['template.php' => new File('Template string')]);
-        $fs->get('/')->add('templates', $foo);
+        $this->fs->get('/')->add('templates', $foo);
 
         $templating = new PhpTemplateEngine('vfs://templates', 'php');
         $string = $templating->render('template');
 
         $this->assertSame('Template string', $string);
-        $fs->unmount();
     }
 
     public function testItThrowsErrorWhenTemplateIsNotFound(): void
     {
-        // Setting up virtual FS
-        $fs = FileSystem::factory('vfs://');
-        $fs->mount();
         $foo = new Directory([]);
-        $fs->get('/')->add('templates', $foo);
+        $this->fs->get('/')->add('templates', $foo);
 
         $templating = new PhpTemplateEngine('vfs://templates', 'php');
         $this->expectException(\RuntimeException::class);
         $templating->render('template');
-
-        $fs->unmount();
     }
 }
